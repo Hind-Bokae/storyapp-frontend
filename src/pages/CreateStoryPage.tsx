@@ -1,43 +1,45 @@
 import {useState} from "react";
-function CreateStoryPage() {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+import {createStory} from "../services/storyService";
+export default function CreateStoryPage() {
+    const [storyTitle, setStoryTitle] = useState('');
+    const [storyContent, setStoryContent] = useState('');
 
-    const handleCreateStory = async (formEvent: React.FormEvent) => {
+    async function handleCreateStory(formEvent: React.FormEvent) {
         formEvent.preventDefault();
-        const story ={
-            title:title,
-            content:content,
-            }
-        await fetch('http://localhost:8080/api/stories', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-                },
-            body: JSON.stringify(story),
-        });
-        window.location.href = '/';
+        try {
+            const newStory = await createStory(storyTitle, storyContent);
+            console.log("Story created successfully", newStory);
+            alert("Story created successfully");
+            setStoryTitle('');
+            setStoryContent('');
+        }catch (error) {
+            console.log("Failed to create story", error);
+            alert("Failed to create story");
+        }
     }
-    return (
-        <div>
-            <h1>Create Story</h1>
-            <form onSubmit={handleCreateStory}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(inputEvent) => setTitle(inputEvent.target.value)}
-                />
-                <br />
-                <textarea
-                    placeholder="Content"
-                    value={content}
-                    onChange={(inputEvent) => setContent(inputEvent.target.value)}
-                />
-                <br />
-                <button type="submit">Create Story</button>
-            </form>
-        </div>
-    );
+return(
+    <div>
+        <h1>Create Story</h1>
+        <form onSubmit={handleCreateStory}>
+            <input
+                type="text"
+                placeholder="Story Title"
+                value={storyTitle}
+                onChange={(inputEvent) => setStoryTitle(inputEvent.target.value)}
+            />
+            <br />
+            <br />
+            <textarea
+                placeholder="Story Content"
+                value={storyContent}
+                onChange={(inputEvent) => setStoryContent(inputEvent.target.value)}
+            />
+            <br />
+            <button type="submit">
+            Create Story
+            </button>
+        </form>
+    </div>
+
+    )
 }
-export default CreateStoryPage;

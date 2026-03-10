@@ -1,5 +1,5 @@
 const AUTH_API_URL = 'https://localhost:8080/api/auth';
-export sync function LoginUser(useername: string, password: string) {
+export async function LoginUser(useername: string, password: string) {
     const response = await fetch(`${AUTH_API_URL}/login`, {
         method: 'POST',
         headers: {
@@ -10,7 +10,7 @@ export sync function LoginUser(useername: string, password: string) {
              password: password
              }),
     });
-const resonseData = await response.json();
+const responseData = await response.json();
 localStorage.setItem('authToken', responseData.token);
 return responseData;
 }

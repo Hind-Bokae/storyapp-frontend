@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import {LoginUser} form "../services/authService";
-import {useNavigate} form "react-router-dom";
+import {LoginUser} from "../services/authService";
+import {useNavigate} from "react-router-dom";
 
 export default function LoginPage() {
     const [username, setUsername] = useState('');
@@ -17,7 +17,7 @@ export default function LoginPage() {
             console.log("Login failed", error);
         }
     }
-   }
+
     return (
         <form onSubmit={handleLogin}>
             <h1>Login</h1>
@@ -41,6 +41,5 @@ export default function LoginPage() {
 
     );
 }
-export default LoginPage;
 
 
