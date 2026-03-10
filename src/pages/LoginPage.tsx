@@ -1,38 +1,32 @@
 import {useState} from 'react';
-function LoginPage() {
+import {LoginUser} form "../services/authService";
+import {useNavigate} form "react-router-dom";
+
+export default function LoginPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const navigate= useNavigate();
 
-    const handleLogin = async (formEvent: React.FormEvent) => {
+    async function handleLogin(formEvent: React.FormEvent) {
         formEvent.preventDefault();
-        const response = await fetch('http://localhost:8080/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username:username,
-                password:password })
-        });
-        if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.token);
-            alert('Login successful!');
-        } else {
-            alert('Login failed!');
+        try {
+            const loginResponse = await LoginUser(username, password);
+            console.log("Login successful", loginResponse);
+            navigate("/");
+        } catch (error) {
+            console.log("Login failed", error);
         }
     }
+   }
     return (
-        <div>
+        <form onSubmit={handleLogin}>
             <h1>Login</h1>
-            <form onSubmit={handleLogin}>
                 <input
                     type="text"
                     placeholder="Username"
                     value={username}
                     onChange={(inputEvent) => setUsername(inputEvent.target.value)}
                 />
-                <br />
                 <input
                     type="password"
                     placeholder="Password"
@@ -40,9 +34,11 @@ function LoginPage() {
                     onChange={(inputEvent) => setPassword(inputEvent.target.value)}
                 />
                <br />
-               <button type="submit">Login</button>
+               <button type="submit">
+               Login
+               </button>
             </form>
-        </div>
+
     );
 }
 export default LoginPage;

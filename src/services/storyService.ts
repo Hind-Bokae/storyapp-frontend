@@ -1,11 +1,25 @@
-import type { Story } from './types/Story';
-const API_URL = "http://localhost:8080/api/stories";
+import {getAuthToken} from "./authService";
+const STORIES_API_URL = 'https://localhost:8080/api/stories';
 
-export async function  getAllStories(): Promise<Story[]> {
-    const response = await fetch(API_URL);
-    if (!response.ok) {
-        throw new Error("Failed to fetch stories");
-    }
-    const data = await response.json();
-    return data.content;
+export async function getAllStories() {
+    const apiResponse = await fetch(STORIES_API_URL);
+    const storiesData = await apiResponse.json();
+    return storiesData;
+}
+
+export async function createStory(title: string, content: string) {
+    const authToken = getAuthToken();
+    const apiResponse= awit fetch(STORIES_API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`,
+        },
+        body: JSON.stringify({
+            title: title,
+            content: content,
+        }),
+    });
+    const createStory= await apiResponse.json();
+    return createStory;
 }
