@@ -4,7 +4,7 @@ const STORIES_API_URL = 'http://localhost:8080/api/stories';
 export async function getAllStories() {
     const apiResponse = await fetch(STORIES_API_URL);
     const storiesData = await apiResponse.json();
-    return storiesData;
+    return storiesData.content;
 }
 
 export async function createStory(title: string, content: string) {
