@@ -13,7 +13,12 @@ export default function LoginPage() {
         formEvent.preventDefault();
         try {
             const loginResponse = await LoginUser(username, password);
-            login(loginResponse.token);
+            localStorage.setItem("authToken", loginResponse.token);
+
+            localStorage.setItem("username", username);
+            login(loginResponse.token, username);
+                         navigate("/");
+            console.log("Login response", loginResponse, username);
             console.log("Login successful");
         } catch (error) {
             console.log("Login failed", error);

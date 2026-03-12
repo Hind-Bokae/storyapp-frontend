@@ -17,6 +17,7 @@ return responseData;
 }
 export function getAuthToken() : string | null {
     return localStorage.getItem('authToken');
+
 }
 export function logoutUser() {
     localStorage.removeItem('authToken');

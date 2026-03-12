@@ -7,11 +7,16 @@ export default function CreateStoryPage() {
     async function handleCreateStory(formEvent: React.FormEvent) {
         formEvent.preventDefault();
         try {
+            if (!storyTitle || !storyContent) {
+                alert("Please fill in both title and content");
+                return;
+            }
             const newStory = await createStory(storyTitle, storyContent);
             console.log("Story created successfully", newStory);
             alert("Story created successfully");
             setStoryTitle('');
             setStoryContent('');
+            navigate("/");
         }catch (error) {
             console.log("Failed to create story", error);
             alert("Failed to create story");
